@@ -1,4 +1,5 @@
 torch
 tensorflow
+tf-keras
 transformers
 gradio
