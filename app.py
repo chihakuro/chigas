@@ -3,13 +3,13 @@ from transformers import pipeline
 
 generator = pipeline('text-generation', model='gpt2')
 
-def generate_text(prompt):
-    generated_text = generator(prompt, max_length=50, num_return_sequences=1)
+def generate_text(prompt, max_length):
+    generated_text = generator(prompt, max_length=max_length, num_return_sequences=1)
     return generated_text[0]['generated_text']
 
 iface = gr.Interface(
     fn=generate_text,
-    inputs=gr.Textbox(lines=2, placeholder="Nhập văn bản đầu vào"),
+    inputs=[gr.Textbox(lines=2, placeholder="Nhập văn bản đầu vào"), gr.Slider(minimum=10, maximum=1000, default=50, label="Độ dài văn bản")],
     outputs="text",
     title="Ứng dụng Generative AI",
     description="Tạo văn bản với GPT-2",
