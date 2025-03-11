@@ -1,0 +1,22 @@
+name: Deploy to Hugging Face Spaces
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Deploy to Spaces
+        uses: huggingface/spaces-action@main
+        with:
+          username: ${{ secrets.HF_USERNAME }} # Thay bằng tên người dùng Hugging Face của bạn
+          token: ${{ secrets.HF_TOKEN }} # Thay bằng token Hugging Face của bạn
+          repo: ${{ github.event.repository.name }} # Tên repository

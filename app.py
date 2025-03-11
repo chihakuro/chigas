@@ -1,0 +1,18 @@
+import gradio as gr
+from transformers import pipeline
+
+generator = pipeline('text-generation', model='gpt2')
+
+def generate_text(prompt):
+    generated_text = generator(prompt, max_length=50, num_return_sequences=1)
+    return generated_text[0]['generated_text']
+
+iface = gr.Interface(
+    fn=generate_text,
+    inputs=gr.Textbox(lines=2, placeholder="Nhập văn bản đầu vào"),
+    outputs="text",
+    title="Ứng dụng Generative AI",
+    description="Tạo văn bản với GPT-2",
+)
+
+iface.launch(share=True) # share=True để triển khai lên Spaces
