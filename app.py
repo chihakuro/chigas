@@ -1,7 +1,7 @@
 import gradio as gr
 from transformers import pipeline
 
-generator = pipeline('text-generation', model='vinai/phobert-base')
+generator = pipeline('text-generation', model='gpt2')
 
 def generate_text(prompt, max_length):
     generated_text = generator(prompt, max_length=max_length, num_return_sequences=1)
