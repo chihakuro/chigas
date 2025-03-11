@@ -1,7 +1,7 @@
 import gradio as gr
 from transformers import pipeline
 
-generator = pipeline('text-generation', model='meta-llama/Meta-Llama-3-8B')
+generator = pipeline('text-generation', model='vinai/phobert-base')
 
 def generate_text(prompt, max_length):
     generated_text = generator(prompt, max_length=max_length, num_return_sequences=1)
@@ -9,7 +9,7 @@ def generate_text(prompt, max_length):
 
 iface = gr.Interface(
     fn=generate_text,
-    inputs=[gr.Textbox(lines=2, placeholder="Nhập văn bản đầu vào"), gr.Slider(minimum=10, maximum=1000, value=50, label="Max Length")],
+    inputs=[gr.Textbox(lines=2, placeholder="Nhập văn bản đầu vào"), gr.Slider(minimum=10, maximum=1000, value=50, label="Độ dài văn bản")],
     outputs="text",
     title="Ứng dụng Generative AI",
     description="Tạo văn bản với GPT-2",
