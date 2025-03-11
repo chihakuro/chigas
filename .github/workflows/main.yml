@@ -8,15 +8,19 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.9'
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-      - name: Deploy to Spaces
-        uses: huggingface/spaces-action@main
-        with:
-          username: ${{ secrets.HF_USERNAME }} # Thay bằng tên người dùng Hugging Face của bạn
-          token: ${{ secrets.HF_TOKEN }} # Thay bằng token Hugging Face của bạn
-          repo: ${{ github.event.repository.name }} # Tên repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Git
+        run: |
+          git config --global user.email "kawaiimidoriiro@gmail.com"
+          git config --global user.name "Hachiru"
+
+      - name: Push to Hugging Face Spaces
+        run: |
+          git clone https://huggingface.co/spaces/${{ secrets.HF_USERNAME }}/${{ github.event.repository.name }} hf_space
+          rsync -av --exclude='.git' ./ hf_space/
+          cd hf_space
+          git add .
+          git commit -m "Update from GitHub Actions"
+          git push https://${{ secrets.HF_USERNAME }}:${{ secrets.HF_TOKEN }}@huggingface.co/spaces/${{ secrets.HF_USERNAME }}/${{ github.event.repository.name }} main
