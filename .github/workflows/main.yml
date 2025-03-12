@@ -15,7 +15,11 @@ jobs:
         run: |
           git config --global user.email "kawaiimidoriiro@gmail.com"
           git config --global user.name "Hachiru"
-
+          
+      - name: Log in to Hugging Face
+        run: |
+          huggingface-cli login --token ${{ secrets.HF_TOKEN }}
+          
       - name: Push to Hugging Face Spaces
         run: |
           git clone https://huggingface.co/spaces/${{ secrets.HF_USERNAME }}/${{ github.event.repository.name }} hf_space
