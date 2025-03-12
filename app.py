@@ -1,16 +1,17 @@
 import torch
-from transformers import GPT2LMHeadModel, GPT2Tokenizer
+from transformers import GPT2LMHeadModel, GPT2Tokenizer, AutoModelForTokenClassification, AutoTokenizer, pipeline
 import gradio as gr
-import scispacy
-import spacy
 
 # Load GPT-2 model and tokenizer
 MODEL_NAME = "gpt2"
 tokenizer = GPT2Tokenizer.from_pretrained(MODEL_NAME)
 model = GPT2LMHeadModel.from_pretrained(MODEL_NAME)
 
-# Load SciSpacy model for medical NLP
-nlp = spacy.load("en_core_sci_md")
+# Load BioBERT for medical NLP without requiring pip install
+BIOBERT_MODEL = "dmis-lab/biobert-base-cased-v1.1"
+biobert_tokenizer = AutoTokenizer.from_pretrained(BIOBERT_MODEL)
+biobert_model = AutoModelForTokenClassification.from_pretrained(BIOBERT_MODEL)
+nlp_pipeline = pipeline("ner", model=biobert_model, tokenizer=biobert_tokenizer)
 
 # Conversation memory
 conversation_history = []
@@ -44,11 +45,11 @@ def generate_text(prompt, max_length=100, temperature=0.7, top_k=50, top_p=0.9, 
         for word in stopwords.split(","):
             text = text.replace(word.strip(), "")
         
-        # Extract medical entities
+        # Extract medical entities using BioBERT
         if extract_entities:
-            doc = nlp(text)
-            entities = [(ent.text, ent.label_) for ent in doc.ents]
-            text += "\n\nExtracted Medical Entities:\n" + "\n".join([f"{e[0]} ({e[1]})" for e in entities])
+            entities = nlp_pipeline(text)
+            extracted_entities = set([entity["word"] for entity in entities])
+            text += "\n\nExtracted Medical Entities:\n" + "\n".join(extracted_entities)
         
         responses.append(text)
     
