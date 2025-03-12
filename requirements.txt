@@ -3,5 +3,3 @@ tensorflow
 tf-keras
 transformers
 gradio
-spacy
-scispacy
