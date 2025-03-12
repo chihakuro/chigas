@@ -1,7 +1,7 @@
 import gradio as gr
 from transformers import pipeline
 
-generator = pipeline('text-generation', model='deepseek-ai/DeepSeek-V2-Lite')
+generator = pipeline('text-generation', model='deepseek-ai/DeepSeek-V2-Lite', trust_remote_code=True)
 
 def generate_text(prompt, max_length):
     generated_text = generator(prompt, max_length=max_length, num_return_sequences=1)
