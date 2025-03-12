@@ -3,3 +3,4 @@ tensorflow
 tf-keras
 transformers
 gradio
+huggingface-hub
