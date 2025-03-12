@@ -18,8 +18,7 @@ jobs:
           
       - name: Install dependencies
         run: |
-          pip install huggingface_hub https://s3.amazonaws.com/weights.huggingface.co/spacy-models/en_core_sci_md-0.5.1.tar.gz
-         
+          pip install huggingface_hub 
           
       - name: Log in to Hugging Face
         run: |
