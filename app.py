@@ -10,7 +10,7 @@ tokenizer = GPT2Tokenizer.from_pretrained(MODEL_NAME)
 model = GPT2LMHeadModel.from_pretrained(MODEL_NAME)
 
 # Load SciSpacy model for medical NLP
-nlp = spacy.load("en_core_sci_md")
+nlp = spacy.load("en_core_web_sm")
 
 # Conversation memory
 conversation_history = []
